@@ -36,3 +36,26 @@ class RSVP(Base):
     player_id = Column(Integer, ForeignKey('players.id'))
     session_id = Column(Integer, ForeignKey('sessions.id'))
     is_coming = Column(Boolean, nullable=False)
+
+class Arrival(Base):
+    __tablename__ = 'arrivals'
+
+    id = Column(Integer, primary_key=True)
+    player_id = Column(Integer, ForeignKey('players.id'))
+    session_id = Column(Integer, ForeignKey('sessions.id'))
+    arrival_time = Column(String, nullable=False)
+    is_late = Column(Boolean, default=False)
+
+
+
+class Payment(Base):
+    __tablename__ = 'payments'
+
+    id = Column(Integer, primary_key=True)
+    player_id = Column(Integer, ForeignKey('players.id'))
+    session_id = Column(Integer, ForeignKey('sessions.id'))
+    paid_at = Column(String, nullable=False)
+    paid_late = Column(Boolean, default=False)
+
+
+Base.metadata.create_all(engine)
