@@ -1,5 +1,6 @@
 from database import * 
 from models import * 
+import datetime
 
 def create_player(player: PlayerCreate) -> str: 
     session = SessionLocal()
@@ -41,9 +42,32 @@ def create_rsvp(rsvp: RSVPCreate):
     session = SessionLocal()
 
     player_response = RSVP(player_id = rsvp.player_id, session_id = rsvp.session_id, is_coming = rsvp.is_coming)
-    
+
     session.add(player_response)
     session.commit()
     session.close()
     return player_response
+
+def create_arrival(arrival: ArrivalCreate):
+    session = SessionLocal()
+    game = session.query(GameSession).filter_by(id= arrival.session_id).first()
+    arrival_time = datetime.now().strftime("%H:%M")
+    new_arrival = Arrival(player_id = arrival.player_id, session_id = arrival.session_id, arrival_time = arrival_time, is_late = False)
+
+    session.add(new_arrival)
+    
+    if arrival_time > game.time:
+        new_arrival.is_late = True
+        player = session.query(Player).filter_by(id= arrival.player_id).first()
+        player.tallies += 1
+
+    session.commit()
+    session.close()
+    return new_arrival 
+
+    
+
+
+
+
 
