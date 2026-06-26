@@ -84,7 +84,6 @@ def create_payment(payment: PaymentCreate):
     return new_payment
 
 
-
 def get_flagged_players(): 
     session = SessionLocal()
     flagged_players = session.query(Player).filter(Player.tallies >= 3).all()
@@ -93,7 +92,11 @@ def get_flagged_players():
     return flagged_players
 
 
-
+def get_tallied_players():
+    session = SessionLocal()
+    tallied = session.query(Player).filter(Player.tallies >= 1).all()
+    session.close()
+    return tallied
 
 
 

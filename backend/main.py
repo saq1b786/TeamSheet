@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from crud import create_player, get_all_players, create_session, get_all_sessions, create_rsvp, create_arrival, create_payment, get_flagged_players
+from crud import create_player, get_all_players, create_session, get_all_sessions, create_rsvp, create_arrival, create_payment, get_flagged_players, get_tallied_players
 from models import PlayerCreate, SessionCreate, RSVPCreate, ArrivalCreate, PaymentCreate
 
 app = FastAPI()
@@ -41,3 +41,8 @@ def log_payments(payment:PaymentCreate):
 def flagged_players():
     flagged = get_flagged_players()
     return flagged
+
+@app.get('/players/tallied')
+def tallied_players():
+    tallies = get_tallied_players()
+    return tallies
