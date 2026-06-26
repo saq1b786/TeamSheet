@@ -1,6 +1,6 @@
 from fastapi import FastAPI
-from crud import create_player, get_all_players, create_session, get_all_sessions, create_rsvp, create_arrival
-from models import PlayerCreate, SessionCreate, RSVPCreate, ArrivalCreate
+from crud import create_player, get_all_players, create_session, get_all_sessions, create_rsvp, create_arrival, create_payment
+from models import PlayerCreate, SessionCreate, RSVPCreate, ArrivalCreate, PaymentCreate
 
 app = FastAPI()
 
@@ -31,3 +31,8 @@ def add_rsvp(rsvp:RSVPCreate):
 def log_arrival(arrival: ArrivalCreate):
     logged_arrival = create_arrival(arrival)
     return logged_arrival
+
+@app.post('/payments')
+def log_payments(payment:PaymentCreate):
+    player_pay = create_payment(payment)
+    return player_pay

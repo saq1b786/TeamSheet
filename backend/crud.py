@@ -65,7 +65,28 @@ def create_arrival(arrival: ArrivalCreate):
     session.close()
     return new_arrival 
 
+def create_payment(payment: PaymentCreate):
+    session = SessionLocal()
+
+    game = session.query(GameSession).filter_by(id= payment.session_id).first()
+    paid_at = datetime.now().strftime("%H:%M")
+    new_payment = Payment(player_id = payment.player_id, session_id = payment.session_id, paid_at = paid_at, paid_late = False)
+
+    session.add(new_payment)
+
+    if paid_at > game.time:
+        new_payment.paid_late = True
+        player = session.query(Player).filter_by(id= payment.player_id).first()
+        player.tallies += 1
     
+    session.commit()
+    session.close()
+    return new_payment
+
+
+
+
+
 
 
 
