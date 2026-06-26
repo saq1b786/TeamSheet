@@ -99,5 +99,24 @@ def get_tallied_players():
     return tallied
 
 
+def get_session_details(session_id: int): 
+    session = SessionLocal()
+
+    specific_game = session.query(GameSession).filter_by(id= session_id).first()
+    rsvp = session.query(RSVP).filter_by(session_id= session_id).all()
+    arrivals = session.query(Arrival).filter_by(session_id= session_id).all()
+    all_payments = session.query(Payment).filter_by(session_id= session_id).all()
+
+    session.close()
+
+    return {
+        "session" : specific_game, 
+        "rsvps" : rsvp, 
+        "arrivals" : arrivals, 
+        "payments" : all_payments
+    }
+
+
+
 
 
