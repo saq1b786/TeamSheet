@@ -85,6 +85,12 @@ def create_payment(payment: PaymentCreate):
 
 
 
+def get_flagged_players(): 
+    session = SessionLocal()
+    flagged_players = session.query(Player).filter(Player.tallies >= 3).all()
+
+    session.close()
+    return flagged_players
 
 
 
