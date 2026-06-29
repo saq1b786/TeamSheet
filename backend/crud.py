@@ -117,6 +117,34 @@ def get_session_details(session_id: int):
     }
 
 
+def close_session(session_id: int):
+    session = SessionLocal()
+
+    find_players_for_session = session.query(RSVP).filter_by(session_id=session_id, is_coming=True).all()
+
+    for player in find_players_for_session: 
+        arrival_record = session.query(Arrival).filter_by(player_id = player.player_id, session_id = player.session_id).first()
+        payment_record = session.query(Payment).filter_by(player_id = player.player_id, session_id = player.session_id).first()
+        specific_player = session.query(Player).filter_by(id = player.player_id).first()
+
+        if not arrival_record.is_late and not payment_record.paid_late: 
+            specific_player.consecutive_clean_weeks += 1
+            if specific_player.consecutive_clean_weeks >=8:
+                specific_player.consecutive_clean_weeks =0 
+                specific_player.tallies = 0 
+        else: 
+            specific_player.consecutive_clean_weeks = 0 
+
+    session.commit()
+    session.close()
+
+    return {'message: Session closed and player records updated!'}
+
+
+
+
+
+
 
 
 

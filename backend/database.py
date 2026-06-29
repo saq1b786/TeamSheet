@@ -47,7 +47,6 @@ class Arrival(Base):
     is_late = Column(Boolean, default=False)
 
 
-
 class Payment(Base):
     __tablename__ = 'payments'
 
