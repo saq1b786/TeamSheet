@@ -4,6 +4,12 @@ import datetime
 
 def create_player(player: PlayerCreate) -> str: 
     session = SessionLocal()
+
+    existing_player = session.query(Player).filter_by(phone_number = player.phone_number).first()
+    if existing_player:
+        session.close()
+        return {'message': 'Phone number already exists. You need to register using a new phone number.'}
+
     new_player = Player(first_name = player.first_name, last_name = player.last_name, phone_number = player.phone_number)
     session.add(new_player)
 
