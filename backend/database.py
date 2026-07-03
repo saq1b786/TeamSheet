@@ -16,6 +16,7 @@ class Player(Base):
     first_name = Column(String, nullable=False)
     last_name = Column(String, nullable=False)
     phone_number = Column(String, nullable=False)
+    password_hash = Column(String, nullable=False)
     is_admin = Column(Boolean, default=False)
     tallies = Column(Integer, default=0)
     consecutive_clean_weeks = Column(Integer, default=0)

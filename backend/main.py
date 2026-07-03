@@ -1,6 +1,6 @@
 from fastapi import FastAPI
-from crud import create_player, get_all_players, create_session, get_all_sessions, create_rsvp, create_arrival, create_payment, get_flagged_players, get_tallied_players, get_session_details, close_session
-from models import PlayerCreate, SessionCreate, RSVPCreate, ArrivalCreate, PaymentCreate
+from crud import create_player, get_all_players, create_session, get_all_sessions, create_rsvp, create_arrival, create_payment, get_flagged_players, get_tallied_players, get_session_details, close_session, login_player
+from models import PlayerCreate, SessionCreate, RSVPCreate, ArrivalCreate, PaymentCreate, LoginRequest
 
 app = FastAPI()
 
@@ -55,3 +55,7 @@ def session_details(session_id: int):
 @app.post('/sessions/{session_id}/close')
 def close_game_session(session_id:int):
     return close_session(session_id)
+
+@app.post('/login')
+def login(log_info: LoginRequest): 
+    return login_player(log_info.phone_number, log_info.password)

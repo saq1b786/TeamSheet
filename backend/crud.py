@@ -1,6 +1,7 @@
 from database import * 
 from models import * 
 import datetime
+from auth import verify_password, create_token, hash_password
 
 def create_player(player: PlayerCreate) -> str: 
     session = SessionLocal()
@@ -10,7 +11,7 @@ def create_player(player: PlayerCreate) -> str:
         session.close()
         return {'message': 'Phone number already exists. You need to register using a new phone number.'}
 
-    new_player = Player(first_name = player.first_name, last_name = player.last_name, phone_number = player.phone_number)
+    new_player = Player(first_name = player.first_name, last_name = player.last_name, phone_number = player.phone_number, password_hash = hash_password(player.password))
     session.add(new_player)
 
     session.commit()
@@ -145,6 +146,28 @@ def close_session(session_id: int):
     session.close()
 
     return {'message: Session closed and player records updated!'}
+
+
+def login_player(phone_number: str, password: str): 
+    session = SessionLocal()
+
+    find_player = session.query(Player).filter_by(phone_number = phone_number).first()
+
+    if find_player: 
+        verify = verify_password(password, find_player.password_hash)
+        if verify: 
+            session.close()
+            return create_token({"player_id": find_player.id, "is_admin": find_player.is_admin})
+            
+        else: 
+            session.close()
+            return {'message': 'wrong password'}
+    else: 
+        session.close()
+        return {'message': 'player not found.'}
+
+
+        
 
 
 
