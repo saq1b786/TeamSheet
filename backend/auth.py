@@ -1,6 +1,8 @@
 from passlib.context import CryptContext
 from jose import jwt
 from datetime import datetime, timedelta, timezone
+from fastapi import Depends, HTTPException
+from fastapi.security import OAuth2PasswordBearer 
 
 pwd_context = CryptContext(schemes=["bcrypt"])
 SECRET_KEY = 'change this later'
@@ -20,3 +22,18 @@ def create_token(data: dict) -> str:
 
 def verify_token(token: str) -> dict:
     return jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
+
+def get_current_player(token: str = Depends(oauth2_scheme)):
+    try:
+        payload = verify_token(token)
+        return payload
+    except:
+        raise HTTPException(status_code=401, detail="Invalid or expired token")
+
+
+
+
+
