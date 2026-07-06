@@ -165,6 +165,8 @@ def login_player(phone_number: str, password: str):
     else: 
         session.close()
         return {'message': 'player not found.'}
+    
+
 
 
         
