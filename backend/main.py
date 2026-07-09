@@ -30,27 +30,31 @@ def add_rsvp(rsvp: RSVPCreate, current_player: dict = Depends(get_current_player
     return player_response
 
 @app.post('/arrivals')
-def log_arrival(arrival: ArrivalCreate):
+def log_arrival(arrival: ArrivalCreate, current_player: dict = Depends(get_current_player)):
     logged_arrival = create_arrival(arrival)
     return logged_arrival
 
 @app.post('/payments')
-def log_payments(payment:PaymentCreate):
+def log_payments(payment:PaymentCreate, current_player: dict = Depends(get_current_player)):
     player_pay = create_payment(payment)
     return player_pay
 
 @app.get('/players/flagged')
-def flagged_players():
+def flagged_players(current_player: dict = Depends(get_current_player)):
+    if not current_player["is_admin"]:
+        raise HTTPException(status_code=403, detail="Admin access only")
     flagged = get_flagged_players()
     return flagged
 
 @app.get('/players/tallied')
-def tallied_players():
+def tallied_players(current_player: dict = Depends(get_current_player)):
+    if not current_player["is_admin"]:
+        raise HTTPException(status_code=403, detail="Admin access only")
     tallies = get_tallied_players()
     return tallies
 
 @app.get('/sessions/{session_id}')
-def session_details(session_id: int):
+def session_details(session_id: int, current_player: dict = Depends(get_current_player)):
     return get_session_details(session_id)
 
 
