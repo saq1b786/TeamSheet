@@ -22,5 +22,29 @@ export default function LoginPage(){
 
     };
 
+    return (
+    <div>
+        <h1>TeamSheet Login</h1>
+
+        <input
+            type="text"
+            placeholder="Phone number"
+            value={phoneNumber}
+            onChange={(e) => setPhoneNumber(e.target.value)}
+        />
+
+        <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+        />
+
+        <button onClick={handleLogin}>Login</button>
+
+        <p>{message}</p>
+    </div>
+);
+
 
 }
