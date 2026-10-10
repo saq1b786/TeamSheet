@@ -116,7 +116,7 @@ export default function DashboardPage(){
                 </div>
 
                 <div className="bg-gray-900 border border-gray-800 rounded-2xl p-6">
-                    <h2 className="text-xl font-bold text-red-400 mb-4">Flagged Players (3+ tallies)</h2>
+                    <h2 className="text-xl font-bold text-red-400 mb-4">Flagged Players (3+ strikes)</h2>
                     {flagged.length === 0 ? (
                         <p className="text-gray-500">No flagged players</p>
                     ) : (
