@@ -165,7 +165,18 @@ def login_player(phone_number: str, password: str):
     else: 
         session.close()
         return {'message': 'player not found.'}
-    
+
+def update_tallies(player_id: int, new_tally_count: int):
+    session = SessionLocal()
+    player = session.query(Player).filter_by(id=player_id).first()
+    if player:
+        player.tallies = new_tally_count
+        session.commit()
+        session.close()
+        return {"message": f"{player.first_name}'s tallies set to {new_tally_count}"}
+    session.close()
+    return {"message": "Player not found"}
+        
 
 
 

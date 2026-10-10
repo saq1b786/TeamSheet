@@ -1,6 +1,6 @@
 from fastapi import FastAPI
-from crud import create_player, get_all_players, create_session, get_all_sessions, create_rsvp, create_arrival, create_payment, get_flagged_players, get_tallied_players, get_session_details, close_session, login_player
-from models import PlayerCreate, SessionCreate, RSVPCreate, ArrivalCreate, PaymentCreate, LoginRequest
+from crud import create_player, get_all_players, create_session, get_all_sessions, create_rsvp, create_arrival, create_payment, get_flagged_players, get_tallied_players, get_session_details, close_session, login_player, update_tallies
+from models import PlayerCreate, SessionCreate, RSVPCreate, ArrivalCreate, PaymentCreate, LoginRequest, TallyUpdate
 from auth import *
 app = FastAPI()
 
@@ -67,3 +67,9 @@ def close_game_session(session_id: int, current_player: dict = Depends(get_curre
 @app.post('/login')
 def login(log_info: LoginRequest): 
     return login_player(log_info.phone_number, log_info.password)
+
+@app.put('/players/tallies')
+def update_player_tallies(tally: TallyUpdate, current_player: dict = Depends(get_current_player)):
+    if not current_player["is_admin"]:
+        raise HTTPException(status_code=403, detail="Admin access only")
+    return update_tallies(tally.player_id, tally.new_tally_count)

@@ -31,3 +31,6 @@ class LoginRequest(BaseModel):
     phone_number: str
     password: str
 
+class TallyUpdate(BaseModel):
+    player_id: int
+    new_tally_count: int
