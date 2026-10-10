@@ -2,7 +2,14 @@ from fastapi import FastAPI
 from crud import create_player, get_all_players, create_session, get_all_sessions, create_rsvp, create_arrival, create_payment, get_flagged_players, get_tallied_players, get_session_details, close_session, login_player, update_tallies
 from models import PlayerCreate, SessionCreate, RSVPCreate, ArrivalCreate, PaymentCreate, LoginRequest, TallyUpdate
 from auth import *
+from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.get('/players') 
 def get_players(current_player: dict = Depends(get_current_player)): 
